@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type="text/css" href="weather.css" />
+    <title>Where should I move?</title>
+  </head>
+  <body>
+    <h1>I WANT TO MOVE</h1>
+    <form class="home-form">
+      <div class="age-choices-menu">
+        <label class="age-choice">What's your age?</label>
+        <select class="age-options">
+          <option value="">Choose one</option>
+          <option value="under 18">Under 18</option>
+          <option value="18 to 24">18-24</option>
+          <option value="25 to 44">25-44</option>
+          <option value="45 to 64">45-64</option>
+          <option value="65 plus">65+</option>
+        </select>
+      </div>
+      <div class="rain-or-sun">
+        <label class="weather-choice">Which do you prefer?</label>
+        <form action="">
+          <input type="radio" name="weather" value="sun" class="weather" />
+          Sun<br />
+          <input type="radio" name="weather" value="rain" class="weather" />
+          Rain<br />
+        </form>
+      </div>
+      <button type="submit" class="submit-choices">Submit</button>
+    </form>
+    <div class="results"></div>
+
+    <div class="reset-button">
+      <button type="button" class="try-again">Try again.</button>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"
+    ></script>
+    <script src="store.js"></script>
+    <script src="weather.js"></script>
+  </body>
+</html>
