@@ -23,26 +23,29 @@ const api = (function() {
       .catch(err => console.log(err.message));
   }
 
-  const baseURL = `https://www.5dayweather.org/api.php?city=`;
-  // const location = data.location;
+  const baseURL = `https://api.weatherbit.io/v2.0/current?key=f855b8978668496cb1bda0cbe469d66e&city=`;
 
-  function getCities() {
-    return apiFetch(`${baseURL}${location}`, {
+  //const APIKEY = "f855b8978668496cb1bda0cbe469d66e";
+
+  function getCities(city) {
+    console.log("getCities is being called.");
+
+    console.log(`${baseURL}${city}`);
+    return apiFetch(`${baseURL}${city}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
-      },
-      body: api.data
+      }
     })
-      .then(response => response.json())
-      .then(data => displayResults(data))
-      .catch(err => alert(`error`));
+      .then(response => response.data)
+      .catch(err => alert(err));
   }
 
   return {
     getCities
   };
 })();
+console.log(api);
 
 function matchCities(city) {
   if (store.cities.age === age) {
@@ -57,9 +60,12 @@ function captureChoices() {
     console.log(`submit pressed.`);
     console.log(store.displayResult);
     let age = $(".age-options").val();
-    let weather = $(".weather:checked").val(); //
+    let weather = $(".weather:checked").val();
+    let city = $(".city-choice").val();
     if (age == "") {
       alert("please select an age");
+    } else if (city == "") {
+      alert("please select a city");
     } else if (weather == undefined) {
       alert("please select a weather");
     } else {
@@ -67,21 +73,24 @@ function captureChoices() {
       console.log(`age: ${age}, weather: ${weather}`);
 
       store.displayResult = !store.displayResult;
-
-      renderResults(age, weather);
+      const data = api.getCities(city);
+      data.then(res => renderResults(age, weather, res));
     }
   });
 }
 
-function renderResults(age, weather) {
-  //use values of age and weather to generate the html on th page with list items and h2
+//switch temp to F
+
+function renderResults(age, weather, data) {
+  console.log(data[0].temp);
+  //search store for age, map over age
+  //change rain/sun to hot or cold over above 50
   const resultString = `
   <h2>Your age: ${age} and your preference: ${weather}</h2>
   <p>Here is where people your age are enjoying the ${weather}:</p>
   <ul class="results-list">
     <li class="result-item">
-    <p> ${data.location}</p>
-    <p>${data.skytext}</p>
+    
       <button type="button" class="flight-choice">Ok, I'll pack my bags</button>
     </li>
   </ul>`;
@@ -101,7 +110,7 @@ function directToFlights() {
 }
 
 function resetForm() {
-  $("button").on("click", ".reset-button", function(event) {
+  $(".reset-button").on("click", ".try-again", function(event) {
     event.preventDefault();
     console.log(`reset button hit.`);
     store.displayResult == false;
