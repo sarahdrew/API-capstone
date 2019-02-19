@@ -102,31 +102,35 @@ function captureChoices() {
 
 function renderResults(age, weather, city, medianAge, data) {
   console.log(data.temp, medianAge);
-  const fahrenheit = data.temp * 1.8 + 32;
+  const fahrenheit = Math.floor(data.temp * 1.8 + 32);
+
+  let flightCity = city.split(",");
+  let flightLink = flightCity[0];
+
   console.log(fahrenheit);
   let resultString = "";
-  if (fahrenheit > 50 && weather === "hot") {
+  if (fahrenheit > 55 && weather === "hot") {
     resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
       <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
       <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}. Looks like a good match!
   
-      <button type="button" class="flight-button">Ok, I'll pack my bags</button></p>
+      <a href="https://flights.united.com/en-us/flights-to-${flightLink}"> Ok, I'll pack my bags</a></p>
       <button type="button" class="try-again">Try again.</button>`;
-  } else if (fahrenheit > 50 && weather === "cold") {
+  } else if (fahrenheit > 55 && weather === "cold") {
     resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
       <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
       <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}.
       <button type="button" class="try-again">That is hotter than I like. Try again!</button></p>`;
-  } else if (fahrenheit < 50 && weather === "cold") {
+  } else if (fahrenheit < 55 && weather === "cold") {
     resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
       <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
       <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}. Looks like a good match!
   
-      <button type="button" class="flight-button">Ok, I'll pack my bags</button></p>
+      <a href="https://flights.united.com/en-us/flights-to-${flightLink}"> Ok, I'll pack my bags</a></p>
       
       <button type="button" class="try-again">Try again.</button>
     `;
-  } else if (fahrenheit < 50 && weather === "hot") {
+  } else if (fahrenheit < 55 && weather === "hot") {
     resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
       <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
       <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}.
@@ -137,16 +141,18 @@ function renderResults(age, weather, city, medianAge, data) {
   } else {
     $(".results").html("");
   }
-  directToFlights();
+  //directToFlights();
   console.log(store.displayResult);
 }
 
-function directToFlights() {
-  $(".flight-choice").on("click", ".result-item", function(event) {
-    event.preventDefault();
-    console.log(`flight choice pressed`);
-  });
-}
+// function directToFlights() {
+//   $("a").on("click", function(event) {
+//     event.preventDefault();
+//     let flightCity = city.split(",");
+//     let flightLink = flightCity[0];
+//     console.log(`flight choice pressed`);
+//   });
+// }
 
 function resetForm() {
   $("body").on("click", ".try-again", function(event) {
@@ -160,7 +166,7 @@ function resetForm() {
 function main() {
   captureChoices();
   resetForm();
-  directToFlights();
+  //   directToFlights();
 }
 
 $(main);
