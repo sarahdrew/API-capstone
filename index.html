@@ -22,30 +22,49 @@
         </select>
       </div>
       <div class="rain-or-sun">
-        <label class="weather-choice">Which do you prefer?</label>
-        <form action="">
-          <input type="radio" name="weather" value="sun" class="weather" />
-          Sun<br />
-          <input type="radio" name="weather" value="rain" class="weather" />
-          Rain<br />
-        </form>
+        <label class="weather-choice">Which weather do you prefer?</label>
+
+        <input type="radio" name="weather" value="hot" class="weather" />
+        Hot<br />
+        <input type="radio" name="weather" value="cold" class="weather" />
+        Cold<br />
       </div>
       <div class="city-choice-menu">
+        <p>Select a city</p>
         <select class="city-choice">
           <option value="">Choose one</option>
           <option value="Portland,OR">Portland, OR</option>
           <option value="Anchorage,AK">Anchorage, AK</option>
           <option value="Phoenix,AZ">Phoenix, AZ</option>
           <option value="LosAngeles,CA">Los Angeles, CA</option>
+          <option value="SanFrancisco,CA">San Francisco, CA</option>
+          <option value="Baldwin,MI">Baldwin, MI</option>
+          <option value="Rocksprings,TX">Rocksprings, TX</option>
+          <option value="Fresno,CA">Fresno, CA</option>
+          <option value="BullheadCity,AZ">BullheadCity, AZ</option>
+          <option value="Denton,TX">Denton, TX</option>
+          <option value="Clare,MI">Clare, MI</option>
+          <option value="StateCollege,PA">State College, PA</option>
+          <option value="Koolaupoko,HI">Koolaupoko, HI</option>
+          <option value="Abbot,ME">Abbot, ME</option>
+          <option value="Sarasota,FL">Sarasota, FL</option>
+          <option value="Hiawassee,GA">Hiawassee, GA</option>
+          <option value="Chicago,IL">Chicago, IL</option>
+          <option value="Miami,FL">Miami, FL</option>
+          <option value="Georgetown, TX">Georgetown, TX</option>
+          <option value="Joliet,IL">Joliet, IL</option>
+          <option value="Southport,NC">Southport, NC</option>
+          <option value="PortAngeles,WA">PortAngeles, WA</option>
+          <option value="Ogallala,NE">Ogallala, NE</option>
+          <option value="Honolulu,HI">Honolulu, HI</option>
         </select>
       </div>
       <button type="submit" class="submit-choices">Submit</button>
     </form>
     <div class="results"></div>
 
-    <div class="reset-button">
-      <button type="button" class="try-again">Try again.</button>
-    </div>
+    <div class="results-hot-cold"></div>
+
     <script
       src="https://code.jquery.com/jquery-3.3.1.js"
       integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="

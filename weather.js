@@ -30,14 +30,14 @@ const api = (function() {
   function getCities(city) {
     console.log("getCities is being called.");
 
-    console.log(`${baseURL}${city}`);
+    // console.log(`${baseURL}${city}`);
     return apiFetch(`${baseURL}${city}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
       }
     })
-      .then(response => response.data)
+      .then(response => response.data[0])
       .catch(err => alert(err));
   }
 
@@ -69,37 +69,76 @@ function captureChoices() {
     } else if (weather == undefined) {
       alert("please select a weather");
     } else {
-      //let weatherChoice = event.currentTarget.weather.value;
-      console.log(`age: ${age}, weather: ${weather}`);
-
-      store.displayResult = !store.displayResult;
+      store.displayResult = true;
       const data = api.getCities(city);
-      data.then(res => renderResults(age, weather, res));
+
+      let medianAge = 0;
+      for (let i = 0; i < store.cities.length; i++) {
+        if (store.cities[i].name === city) {
+          console.log("city found");
+          let ageRange = store.cities[i].age.split("-");
+          if (ageRange[0] == "Under 18") {
+            medianAge = 18;
+          } else if (ageRange[0] == "65+") {
+            medianAge = 65;
+          } else {
+            medianAge = Math.floor(
+              (parseInt(ageRange[0]) + parseInt(ageRange[1])) / 2
+            );
+          }
+          console.log(medianAge);
+        }
+      }
+      console.log(
+        `age: ${age}, weather: ${weather} city: ${city} medianAge: ${medianAge}`
+      );
+
+      data.then(response =>
+        renderResults(age, weather, city, medianAge, response)
+      );
     }
   });
 }
 
-//switch temp to F
-
-function renderResults(age, weather, data) {
-  console.log(data[0].temp);
-  //search store for age, map over age
-  //change rain/sun to hot or cold over above 50
-  const resultString = `
-  <h2>Your age: ${age} and your preference: ${weather}</h2>
-  <p>Here is where people your age are enjoying the ${weather}:</p>
-  <ul class="results-list">
-    <li class="result-item">
-    
-      <button type="button" class="flight-choice">Ok, I'll pack my bags</button>
-    </li>
-  </ul>`;
+function renderResults(age, weather, city, medianAge, data) {
+  console.log(data.temp, medianAge);
+  const fahrenheit = data.temp * 1.8 + 32;
+  console.log(fahrenheit);
+  let resultString = "";
+  if (fahrenheit > 50 && weather === "hot") {
+    resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
+      <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
+      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}. Looks like a good match!
+  
+      <button type="button" class="flight-button">Ok, I'll pack my bags</button></p>
+      <button type="button" class="try-again">Try again.</button>`;
+  } else if (fahrenheit > 50 && weather === "cold") {
+    resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
+      <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
+      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}.
+      <button type="button" class="try-again">That is hotter than I like. Try again!</button></p>`;
+  } else if (fahrenheit < 50 && weather === "cold") {
+    resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
+      <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
+      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}. Looks like a good match!
+  
+      <button type="button" class="flight-button">Ok, I'll pack my bags</button></p>
+      
+      <button type="button" class="try-again">Try again.</button>
+    `;
+  } else if (fahrenheit < 50 && weather === "hot") {
+    resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
+      <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
+      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}.
+      <button type="button" class="try-again">That is colder than I like. Try again!</button></p>`;
+  }
   if (store.displayResult == true) {
     $(".results").html(resultString);
   } else {
     $(".results").html("");
   }
   directToFlights();
+  console.log(store.displayResult);
 }
 
 function directToFlights() {
@@ -110,10 +149,11 @@ function directToFlights() {
 }
 
 function resetForm() {
-  $(".reset-button").on("click", ".try-again", function(event) {
+  $("body").on("click", ".try-again", function(event) {
     event.preventDefault();
     console.log(`reset button hit.`);
     store.displayResult == false;
+    $("form")[0].reset();
   });
 }
 
