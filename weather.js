@@ -1,10 +1,8 @@
 "use strict";
 /* global $, Headers, */
 
-//http://www.city-data.com/
-//http://www.governing.com/gov-data/census/median-age-county-population-map.html
-
 const api = (function() {
+  //wrapper API function, catches errors, IIFE- calls itself
   function apiFetch(...args) {
     let error = false;
     return fetch(...args)
@@ -25,9 +23,8 @@ const api = (function() {
 
   const baseURL = `https://api.weatherbit.io/v2.0/current?key=f855b8978668496cb1bda0cbe469d66e&city=`;
 
-  //const APIKEY = "f855b8978668496cb1bda0cbe469d66e";
-
   function getCities(city) {
+    //get the cities from the form and put them through the API
     console.log("getCities is being called.");
     return apiFetch(`${baseURL}${city}`, {
       method: "GET",
@@ -43,7 +40,6 @@ const api = (function() {
     getCities
   };
 })();
-console.log(api);
 
 function matchCities(city) {
   if (store.cities.age === age) {
@@ -52,6 +48,7 @@ function matchCities(city) {
 }
 
 function captureChoices() {
+  //take the values of the users choice and submit them on the submit button
   $(".submit-choices").on("click", function(event) {
     event.preventDefault();
     console.log(event.currentTarget);
@@ -73,7 +70,6 @@ function captureChoices() {
       let medianAge = 0;
       for (let i = 0; i < store.cities.length; i++) {
         if (store.cities[i].name === city) {
-          console.log("city found");
           let ageRange = store.cities[i].age.split("-");
           if (ageRange[0] == "Under 18") {
             medianAge = 18;
@@ -84,7 +80,6 @@ function captureChoices() {
               (parseInt(ageRange[0]) + parseInt(ageRange[1])) / 2
             );
           }
-          console.log(medianAge);
         }
       }
       console.log(
@@ -99,13 +94,10 @@ function captureChoices() {
 }
 
 function renderResults(age, weather, city, medianAge, data) {
+  // render results to the page using the information from the form and the weatherbit API
+  //convert weather to fahrenheit from celsius
   console.log(data.temp, medianAge);
   const fahrenheit = Math.floor(data.temp * 1.8 + 32);
-
-  let flightCity = city.split(",");
-  let flightLink = flightCity[0];
-
-  console.log(fahrenheit);
   let resultString = "";
   if (fahrenheit >= 55 && weather === "warm") {
     resultString = `
@@ -135,19 +127,18 @@ function renderResults(age, weather, city, medianAge, data) {
       <p><button type="button" class="try-again">That is colder than I like. Try again!</button></p>`;
   }
   if (store.displayResult == true) {
+    //show results if submit button has been pressed, otherwise hide results div
     $(".results").html(resultString);
   } else {
-    /*$(".results").html(
-      `<img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png"> <img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png"><img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png">`
-    );*/
     $(".results").hide();
   }
   $(".results").show();
-  //directToFlights();
+
   console.log(store.displayResult);
 }
 
 function resetForm() {
+  //reset back to the landing page, but add airplane graphics in results div
   $("body").on("click", ".try-again", function(event) {
     event.preventDefault();
     console.log(`reset button hit.`);
