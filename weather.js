@@ -29,8 +29,6 @@ const api = (function() {
 
   function getCities(city) {
     console.log("getCities is being called.");
-
-    // console.log(`${baseURL}${city}`);
     return apiFetch(`${baseURL}${city}`, {
       method: "GET",
       headers: {
@@ -109,50 +107,45 @@ function renderResults(age, weather, city, medianAge, data) {
 
   console.log(fahrenheit);
   let resultString = "";
-  if (fahrenheit > 55 && weather === "hot") {
-    resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
+  if (fahrenheit >= 55 && weather === "warm") {
+    resultString = `
       <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
-      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}. Looks like a good match!
+      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}. Looks like a good match!</p>
   
-      <a href="https://flights.united.com/en-us/flights-to-${flightLink}"> Ok, I'll pack my bags</a></p>
-      <button type="button" class="try-again">Try again.</button>`;
-  } else if (fahrenheit > 55 && weather === "cold") {
-    resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
+      <p><a href="https://www.google.com/search?ei=CyRwXIr2KdDesAXSyI-oBw&q=one+way+ticket+to+${city}&oq=one+way+ticket+to+${city}&gs_l=psy-ab.3..0j0i22i30l9.27497.30703..30816...0.0..0.107.2195.19j5......0....1..gws-wiz.......0i71j35i39j0i67j0i131j0i20i263.1vl3q8ti4As"> Ok, I'll pack my bags</a>
+      <button type="button" class="try-again">Try again.</button></p>`;
+  } else if (fahrenheit >= 55 && weather === "chilly") {
+    resultString = `
       <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
-      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}.
-      <button type="button" class="try-again">That is hotter than I like. Try again!</button></p>`;
-  } else if (fahrenheit < 55 && weather === "cold") {
-    resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
+     <p> ${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}.</p>
+      <p><button type="button" class="try-again">That is warmer than I like. Try again!</button></p>`;
+  } else if (fahrenheit <= 55 && weather === "chilly") {
+    resultString = `
       <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
-      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}. Looks like a good match!
+     <p> ${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}. Looks like a good match!</p>
   
-      <a href="https://flights.united.com/en-us/flights-to-${flightLink}"> Ok, I'll pack my bags</a></p>
+      <p><a href="https://www.google.com/search?ei=CyRwXIr2KdDesAXSyI-oBw&q=one+way+ticket+to+${city}&oq=one+way+ticket+to+${city}&gs_l=psy-ab.3..0j0i22i30l9.27497.30703..30816...0.0..0.107.2195.19j5......0....1..gws-wiz.......0i71j35i39j0i67j0i131j0i20i263.1vl3q8ti4As"> Ok, I'll pack my bags</a>
       
-      <button type="button" class="try-again">Try again.</button>
+      <button type="button" class="try-again">Try again.</button></p>
     `;
-  } else if (fahrenheit < 55 && weather === "hot") {
-    resultString = `<h2>Your age: ${age} and you prefer ${weather} weather</h2>
+  } else if (fahrenheit <= 55 && weather === "warm") {
+    resultString = `
       <p>Are people your age enjoying ${weather} weather right now in ${city}?</p>
-      <p>${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}.
-      <button type="button" class="try-again">That is colder than I like. Try again!</button></p>`;
+     <p> ${city} has a median age of ${medianAge} and the current temp is ${fahrenheit}.</p>
+      <p><button type="button" class="try-again">That is colder than I like. Try again!</button></p>`;
   }
   if (store.displayResult == true) {
     $(".results").html(resultString);
   } else {
-    $(".results").html("");
+    /*$(".results").html(
+      `<img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png"> <img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png"><img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png">`
+    );*/
+    $(".results").hide();
   }
+  $(".results").show();
   //directToFlights();
   console.log(store.displayResult);
 }
-
-// function directToFlights() {
-//   $("a").on("click", function(event) {
-//     event.preventDefault();
-//     let flightCity = city.split(",");
-//     let flightLink = flightCity[0];
-//     console.log(`flight choice pressed`);
-//   });
-// }
 
 function resetForm() {
   $("body").on("click", ".try-again", function(event) {
@@ -160,13 +153,15 @@ function resetForm() {
     console.log(`reset button hit.`);
     store.displayResult == false;
     $("form")[0].reset();
+    $(".results").html(
+      `<img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png"> <img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png"><img src="https://img.icons8.com/metro/26/000000/airplane-mode-on.png">`
+    );
   });
 }
 
 function main() {
   captureChoices();
   resetForm();
-  //   directToFlights();
 }
 
 $(main);
