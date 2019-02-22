@@ -1,9 +1,9 @@
-Where Should I Move?
+#Where Should I Move?
 
-Live Demo:
+[Live Demo](http://www.google.com)
 
---screen shots--
 Landing Page:
+![Landing Page](https://github.com/sarahdrew/API-capstone/blob/gh-pages/Landing-Page.jpg?raw=true)
 
 Results Page:
 
