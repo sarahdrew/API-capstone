@@ -2,7 +2,7 @@ Where Should I Move?
 
 This app was created for users who know they want to move to a new city, but don't know where. If the live weather of a chosen city matches their preference, they're able to click a button and be directed to a search for one way tickets to their future home.
 
-[Link to Live Demo](http://www.google.com)
+[Link to Live Demo](https://sarahdrew.github.io/where-should-i-move/)
 
 Landing Page:
 ![Landing Page](https://github.com/sarahdrew/where-should-i-move/blob/gh-pages/Landing-Page.jpg?raw=true)
